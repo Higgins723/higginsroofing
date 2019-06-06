@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [hasError, setError] = useState(false);
+
+  const handleSuccess = (response) => {
+    console.log(response.data);
+  }
+
+  const handleError = (error) => {
+    setPassword('');
+    setError(true);
+    console.log(error, 'failed');
+  }
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -12,14 +22,12 @@ const Login = () => {
       username: email,
       password: password
     })
-      .then(res => {
-        console.log(res, 'success');
+      .then(response => {
+        handleSuccess(response);
       })
-      .catch(err => {
-        setPassword('');
-        setError(true);
-        console.log(err, 'failed');
-      })
+      .catch(error => {
+        handleError(error);
+      });
   }
 
   return (

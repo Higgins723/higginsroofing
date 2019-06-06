@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Home from './components/Home';
 import Login from './components/Login';
 import './App.scss';
 
 const App = () => {
-  const [isAuthenticated, setAuth] = useState(false);
+  const [isAuthenticated] = useState(false);
+
   return (
     <div>
       {isAuthenticated ? (
