@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getCookie, deleteCookie, setCookie } from './utils';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
 import Home from './components/Home';
@@ -9,14 +10,17 @@ const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [userData, setUserData] = useState({});
 
-  const verifyToken = () => {
+  const verifyToken = (token) => {
     axios.post('https://higginsroofingapi.herokuapp.com/api/auth/jwt/verify/', {
-      token: userData.token
+      token: token
     })
       .then(response => {
-        console.log(response);
+        setAuthenticated(true);
+        setUserData(response.data);
+        setCookie('token', response.data.token, 7);
       })
       .catch(error => {
+        deleteCookie('token');
         setUserData({});
         setAuthenticated(false);
       });
@@ -24,12 +28,17 @@ const App = () => {
 
   const login = (d) => {
     setUserData(d);
-    setAuthenticated(true);
   }
 
   useEffect(() => {
-    if (!(isEmpty(userData)) && isAuthenticated) {
-      verifyToken();
+    const token = getCookie('token');
+
+    if (token.length > 0 && !isAuthenticated) {
+      verifyToken(token);
+    }
+
+    if (!(isEmpty(userData)) && !isAuthenticated && token.length === 0) {
+      verifyToken(userData.token);
     }
   })
 
