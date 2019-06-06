@@ -8,13 +8,14 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSuccess = (response) => {
-    console.log(response.data);
+    setLoading(false);
+    props.login(response.data);
   }
 
   const handleError = (error) => {
     setPassword('');
     setError(true);
-    console.log(error, 'failed');
+    setLoading(false);
   }
 
   const onSubmit = (e) => {
@@ -29,9 +30,6 @@ const Login = (props) => {
       })
       .catch(error => {
         handleError(error);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }
 
@@ -43,7 +41,7 @@ const Login = (props) => {
         </div>
       ) : (
         <div>
-          {hasError && <p className="text-danger">Username and password are incorrect</p>}
+          {hasError && <p className="text-danger">Username or password are incorrect</p>}
           <form onSubmit={onSubmit} className="form-signin">
             <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label className="sr-only">Username</label>

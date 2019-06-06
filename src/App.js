@@ -4,14 +4,20 @@ import Login from './components/Login';
 import './App.scss';
 
 const App = () => {
-  const [isAuthenticated] = useState(false);
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  const login = (d) => {
+    setUserData(d);
+    setAuthenticated(true);
+  }
 
   return (
     <div>
       {isAuthenticated ? (
-        <Home />
+        <Home userData={userData} />
       ) : (
-        <Login />
+        <Login login={login} />
       )}
     </div>
   );
