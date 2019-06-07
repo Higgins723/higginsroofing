@@ -1,8 +1,12 @@
 import React from 'react';
+import Nav from './Nav';
 
-const Home = () => {
+const Home = (props) => {
+  console.log(props.userData)
   return (
-    <div>home</div>
+    <div>
+      <Nav username={props.userData.user} />
+    </div>
   );
 }
 

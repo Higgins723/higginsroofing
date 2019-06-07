@@ -9,20 +9,24 @@ import './App.scss';
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [userData, setUserData] = useState({});
+  const [loaded, setLoaded] = useState(false);
 
   const verifyToken = (token) => {
     axios.post('https://higginsroofingapi.herokuapp.com/api/auth/jwt/verify/', {
       token: token
     })
       .then(response => {
-        setAuthenticated(true);
-        setUserData(response.data);
         setCookie('token', response.data.token, 7);
+        setUserData(response.data);
+        setAuthenticated(true);
       })
       .catch(error => {
         deleteCookie('token');
         setUserData({});
         setAuthenticated(false);
+      })
+      .finally(() => {
+        setLoaded(true);
       });
   }
 
@@ -33,21 +37,38 @@ const App = () => {
   useEffect(() => {
     const token = getCookie('token');
 
+    // verify token if cookie exists with name token
     if (token.length > 0 && !isAuthenticated) {
       verifyToken(token);
     }
 
+    // verify token if no cookie but user data was set from login component
     if (!(isEmpty(userData)) && !isAuthenticated && token.length === 0) {
       verifyToken(userData.token);
     }
-  })
+
+    // set loaded if not authenticated, no cookie, and user data is empty
+    if (isEmpty(userData) && !isAuthenticated && token.length === 0) {
+      setLoaded(true);
+    }
+  }, [loaded, userData, isAuthenticated])
 
   return (
     <div>
-      {isAuthenticated ? (
-        <Home userData={userData} />
+      {loaded ? (
+        <div>
+          {isAuthenticated ? (
+            <Home userData={userData} />
+          ) : (
+            <Login login={login} />
+          )}
+        </div>
       ) : (
-        <Login login={login} />
+        <div className="text-center">
+          <div className="spinner-grow" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
       )}
     </div>
   );

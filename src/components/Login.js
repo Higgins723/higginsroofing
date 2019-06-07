@@ -8,7 +8,6 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
 
   const handleSuccess = (response) => {
-    setLoading(false);
     props.login(response.data);
   }
 
