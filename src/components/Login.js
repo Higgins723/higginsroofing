@@ -35,7 +35,7 @@ const Login = (props) => {
   return (
     <div className="text-center login">
       {loading ? (
-        <div className="spinner-grow" role="status">
+        <div className="spinner-grow mx-auto" role="status">
           <span className="sr-only">Loading...</span>
         </div>
       ) : (

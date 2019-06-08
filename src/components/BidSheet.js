@@ -52,7 +52,7 @@ const BidSheet = (props) => {
           ))
         )
       ) : (
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 mx-auto">
           <div className="spinner-grow" role="status">
             <span className="sr-only">Loading...</span>
           </div>

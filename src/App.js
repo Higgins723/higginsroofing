@@ -64,7 +64,7 @@ const App = () => {
           )}
         </div>
       ) : (
-        <div className="text-center">
+        <div className="text-center mx-auto">
           <div className="spinner-grow" role="status">
             <span className="sr-only">Loading...</span>
           </div>
