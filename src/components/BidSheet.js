@@ -30,6 +30,9 @@ const BidSheet = (props) => {
 
   return (
     <div className="row">
+      <div className="col-12 mt-5 mb-3 border-bottom">
+        <h2>Bid Sheets</h2>
+      </div>
       {isLoaded ? (
         hasError ? (
           <div className="mt-5 text-center h4">
@@ -42,7 +45,7 @@ const BidSheet = (props) => {
                 <div className="card-body">
                   <h5 className="card-title">{i.job_name}</h5>
                   <p className="card-text">{i.description}</p>
-                  <Link to="/" className="btn btn-primary">See More</Link>
+                  <Link to={`/bid/${i.id}/`} className="btn btn-primary">See More</Link>
                 </div>
               </div>
             </div>
