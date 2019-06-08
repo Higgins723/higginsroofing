@@ -103,7 +103,7 @@ const Bid = (props) => {
                   timeIntervals={30}
                   dateFormat="MMMM d, yyyy h:mm aa"
                   timeCaption="Time"
-                  onChange={(date) => console.log(date)}
+                  onChange={(date) => onChange('date_ordered', `${date}`)}
                 />
               </div>
               <div className="form-group">
@@ -117,7 +117,7 @@ const Bid = (props) => {
                   timeIntervals={30}
                   dateFormat="MMMM d, yyyy h:mm aa"
                   timeCaption="Time"
-                  onChange={(date) => console.log(date)}
+                  onChange={(date) => onChange('date_promised', `${date}`)}
                 />
               </div>
               <div className="form-group">
