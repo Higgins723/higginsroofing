@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { deleteCookie } from '../utils';
 
 const Nav = (props) => {
@@ -9,7 +10,7 @@ const Nav = (props) => {
 
   return (
     <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a className="navbar-brand" href="/">Higgins Roofing</a>
+      <Link to="/" className="navbar-brand">Higgins Roofing</Link>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -17,7 +18,10 @@ const Nav = (props) => {
       <div className="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
+            <Link to="/" className="nav-link">Home <span className="sr-only">(current)</span></Link>
+          </li>
+          <li className="nav-item active">
+            <Link to="/create/" className="nav-link">Create</Link>
           </li>
         </ul>
         <ul className="navbar-nav navbar-right">
