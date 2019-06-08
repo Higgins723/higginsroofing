@@ -12,6 +12,7 @@ const Bid = (props) => {
 
   const getBid = () => {
     const { match: { params } } = props;
+    setIsLoaded(false);
 
     axios.get(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, {
       headers: {"Authorization" : `JWT ${props.userData.token}`}
@@ -47,6 +48,25 @@ const Bid = (props) => {
     setBid(b);
   }
 
+  const onSubmit= (e) => {
+    e.preventDefault();
+    const { match: { params } } = props;
+    setIsLoaded(false);
+
+    axios.put(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, bid, {
+      headers: {"Authorization" : `JWT ${props.userData.token}`},
+    })
+      .then(response => {
+        setBid(response.data);
+      })
+      .catch(error => {
+        setHasError(true);
+      })
+      .finally(() => {
+        setIsLoaded(true);
+      });
+  }
+
   return (
     <div className="row">
       {!isLoaded ? (
@@ -63,34 +83,34 @@ const Bid = (props) => {
             <div className="col-12 mt-5 mb-3 border-bottom">
               <h2>Bid Sheet</h2>
             </div>
-            <form>
+            <form onSubmit={(event) => onSubmit(event)}>
               <div className="form-group">
                 <label>Job name</label>
-                <input onChange={(event) => onChange('job_name', event.target.value)} type="text" className="form-control" value={bid.job_name} />
+                <input required onChange={(event) => onChange('job_name', event.target.value)} type="text" className="form-control" value={bid.job_name} />
               </div>
               <div className="form-group">
                 <label>Bill to</label>
-                <input onChange={(event) => onChange('bill_to', event.target.value)} type="text" className="form-control" value={bid.bill_to} />
+                <input required onChange={(event) => onChange('bill_to', event.target.value)} type="text" className="form-control" value={bid.bill_to} />
               </div>
               <div className="form-group">
                 <label>Email address</label>
-                <input onChange={(event) => onChange('email', event.target.value)} type="email" className="form-control" value={bid.email} placeholder="name@example.com" />
+                <input required onChange={(event) => onChange('email', event.target.value)} type="email" className="form-control" value={bid.email} placeholder="name@example.com" />
               </div>
               <div className="form-group">
                 <label>Address</label>
-                <input onChange={(event) => onChange('address', event.target.value)} type="text" className="form-control" value={bid.address} />
+                <input required onChange={(event) => onChange('address', event.target.value)} type="text" className="form-control" value={bid.address} />
               </div>
               <div className="form-group">
                 <label>City</label>
-                <input onChange={(event) => onChange('city', event.target.value)} type="text" className="form-control" value={bid.city} />
+                <input required onChange={(event) => onChange('city', event.target.value)} type="text" className="form-control" value={bid.city} />
               </div>
               <div className="form-group">
                 <label>Phone</label>
-                <input onChange={(event) => onChange('phone', event.target.value)} type="text" className="form-control" value={bid.phone} />
+                <input required onChange={(event) => onChange('phone', event.target.value)} type="text" className="form-control" value={bid.phone} />
               </div>
               <div className="form-group">
                 <label>Order taken by</label>
-                <input onChange={(event) => onChange('order_taken_by', event.target.value)} type="text" className="form-control" value={bid.order_taken_by} />
+                <input required onChange={(event) => onChange('order_taken_by', event.target.value)} type="text" className="form-control" value={bid.order_taken_by} />
               </div>
               <div className="form-group">
                 <label>Date ordered</label>
@@ -104,6 +124,7 @@ const Bid = (props) => {
                   dateFormat="MMMM d, yyyy h:mm aa"
                   timeCaption="Time"
                   onChange={(date) => onChange('date_ordered', `${date}`)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -118,27 +139,32 @@ const Bid = (props) => {
                   dateFormat="MMMM d, yyyy h:mm aa"
                   timeCaption="Time"
                   onChange={(date) => onChange('date_promised', `${date}`)}
+                  required
                 />
               </div>
               <div className="form-group">
                 <label>Description</label>
-                <textarea onChange={(event) => onChange('description', event.target.value)} className="form-control" value={bid.description} rows="3"></textarea>
+                <textarea required onChange={(event) => onChange('description', event.target.value)} className="form-control" value={bid.description} rows="3"></textarea>
               </div>
               <div className="form-group">
                 <label>Total for materials and labor</label>
-                <input onChange={(event) => onChange('total_materials_and_labor', event.target.value)} type="text" className="form-control" value={bid.total_materials_and_labor} />
+                <input required onChange={(event) => onChange('total_materials_and_labor', event.target.value)} type="text" className="form-control" value={bid.total_materials_and_labor} />
               </div>
               <div className="form-group">
                 <label>Extras</label>
-                <textarea onChange={(event) => onChange('extras', event.target.value)} className="form-control" value={bid.extras} rows="3"></textarea>
+                <textarea required onChange={(event) => onChange('extras', event.target.value)} className="form-control" value={bid.extras} rows="3"></textarea>
               </div>
               <div className="form-group">
                 <label>Total for extras</label>
-                <input onChange={(event) => onChange('total_for_extras', event.target.value)} type="text" className="form-control" value={bid.total_for_extras} />
+                <input required onChange={(event) => onChange('total_for_extras', event.target.value)} type="text" className="form-control" value={bid.total_for_extras} />
               </div>
               <div className="form-group">
                 <label>Grand total</label>
-                <input disabled type="text" className="form-control" value={bid.grand_total} />
+                <input required disabled type="text" className="form-control" value={bid.grand_total} />
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary">Update</button>
+                <button onClick={() => getBid()} type="button" className="btn btn-danger ml-2">Cancel</button>
               </div>
             </form>
           </div>
