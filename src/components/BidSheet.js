@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { orderBy } from 'lodash';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -12,7 +13,7 @@ const BidSheet = (props) => {
       headers: {"Authorization" : `JWT ${props.userData.token}`}
     })
       .then(response => {
-        setBids(response.data);
+        setBids(orderBy(response.data, ['id'], ['desc']));
       })
       .catch(error => {
         setHasError(true);
