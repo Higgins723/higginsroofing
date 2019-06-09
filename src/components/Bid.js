@@ -9,6 +9,7 @@ const Bid = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [bid, setBid] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
 
   const getBid = () => {
     const { match: { params } } = props;
@@ -48,7 +49,7 @@ const Bid = (props) => {
     setBid(b);
   }
 
-  const onSubmit= (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const { match: { params } } = props;
     setIsLoaded(false);
@@ -58,6 +59,24 @@ const Bid = (props) => {
     })
       .then(response => {
         setBid(response.data);
+      })
+      .catch(error => {
+        setHasError(true);
+      })
+      .finally(() => {
+        setIsLoaded(true);
+      });
+  }
+
+  const sendEmail = () => {
+    const { match: { params } } = props;
+    setIsLoaded(false);
+
+    axios.post(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, bid, {
+      headers: {"Authorization" : `JWT ${props.userData.token}`},
+    })
+      .then(response => {
+        setShowMessage(true);
       })
       .catch(error => {
         setHasError(true);
@@ -79,9 +98,20 @@ const Bid = (props) => {
             <span className="text-danger">Error fetching data for bid.</span>
           </div>
         ) : (
-          <div className="col-12">
+          <div className="col-12 mb-5">
             <div className="col-12 mt-5 mb-3 border-bottom">
-              <h2>Bid Sheet</h2>
+              {showMessage &&
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>Email</strong> was sent successfully!
+                  <button onClick={() => setShowMessage(false)} type="button" className="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              }
+              <div className="mb-2">
+                <span className="h2">Bid Sheet</span>
+                <button onClick={() => sendEmail()} className="float-right btn btn-primary">Send email</button>
+              </div>
             </div>
             <form onSubmit={(event) => onSubmit(event)}>
               <div className="form-group">
