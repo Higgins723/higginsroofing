@@ -90,18 +90,23 @@ const Bid = (props) => {
 
   const deleteBid = () => {
     const { match: { params } } = props;
-    setIsLoaded(false);
 
-    axios.delete(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, {
-      headers: {"Authorization" : `JWT ${props.userData.token}`},
-    })
-      .then(response => {
-        setRedirect(true);
+    if (window.confirm(`Are you sure you want to delete bid with id: ${params.id}?`)) {
+      setIsLoaded(false);
+
+      axios.delete(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, {
+        headers: {"Authorization" : `JWT ${props.userData.token}`},
       })
-      .catch(error => {
-        setHasError(true);
-        setIsLoaded(true);
-      });
+        .then(response => {
+          setRedirect(true);
+        })
+        .catch(error => {
+          setHasError(true);
+        })
+        .finally(() => {
+          setIsLoaded(true);
+        });
+    }
   }
 
   const redirectHome = () => {
@@ -110,7 +115,7 @@ const Bid = (props) => {
 
   return (
     <div className="row">
-      {redirect &&
+      {(redirect && isLoaded) &&
         redirectHome()
       }
 
@@ -134,12 +139,16 @@ const Bid = (props) => {
                   </button>
                 </div>
               }
-              <div className="mb-2">
-                <span className="h2">Bid Sheet</span>
-                <div className="float-right">
-                  <button onClick={() => sendEmail()} className="btn btn-primary mr-3">Send email</button>
-                  <button onClick={() => deleteBid()} className="btn btn-danger">Delete bid</button>
+              <div className="row">
+                <div className="mb-2 col">
+                  <div className="float-right">
+                    <button onClick={() => sendEmail()} className="btn btn-primary mr-3">Send email</button>
+                    <button onClick={() => deleteBid()} className="btn btn-danger">Delete bid</button>
+                  </div>
                 </div>
+              </div>
+              <div className="mb-2">
+                <h2>Bid Sheet</h2>
               </div>
             </div>
             <form onSubmit={(event) => onSubmit(event)}>

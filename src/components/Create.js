@@ -66,7 +66,7 @@ const Create = (props) => {
 
   return (
     <div className="row">
-      {redirect && isLoaded &&
+      {(redirect && isLoaded) &&
         redirectHome()
       }
 
