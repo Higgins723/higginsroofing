@@ -43,8 +43,10 @@ const BidSheet = (props) => {
             <div key={i.id} className="col-lg-4 col-md-6 col-xs-12">
               <div className="card bw mt-3 mb-3">
                 <div className="card-body">
-                  <h5 className="card-title">{i.job_name}</h5>
+                  <h5 className="card-title border-bottom">{i.job_name}</h5>
                   <p className="card-text">{i.description}</p>
+                  <p className="card-text"><b>Bill to:</b> {i.bill_to}</p>
+                  <p className="card-text"><b>Phone:</b> {i.phone}</p>
                   <Link to={`/bid/${i.id}/`} className="btn btn-primary">See More</Link>
                 </div>
               </div>

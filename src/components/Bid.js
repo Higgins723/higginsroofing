@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import axios from 'axios';
 import moment from 'moment';
@@ -10,6 +11,7 @@ const Bid = (props) => {
   const [hasError, setHasError] = useState(false);
   const [bid, setBid] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const getBid = () => {
     const { match: { params } } = props;
@@ -86,8 +88,32 @@ const Bid = (props) => {
       });
   }
 
+  const deleteBid = () => {
+    const { match: { params } } = props;
+    setIsLoaded(false);
+
+    axios.delete(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, {
+      headers: {"Authorization" : `JWT ${props.userData.token}`},
+    })
+      .then(response => {
+        setRedirect(true);
+      })
+      .catch(error => {
+        setHasError(true);
+        setIsLoaded(true);
+      });
+  }
+
+  const redirectHome = () => {
+    return <Redirect to="/" />
+  }
+
   return (
     <div className="row">
+      {redirect &&
+        redirectHome()
+      }
+
       {!isLoaded ? (
         <div className="spinner-grow mx-auto mt-5" role="status">
           <span className="sr-only">Loading...</span>
@@ -110,7 +136,10 @@ const Bid = (props) => {
               }
               <div className="mb-2">
                 <span className="h2">Bid Sheet</span>
-                <button onClick={() => sendEmail()} className="float-right btn btn-primary">Send email</button>
+                <div className="float-right">
+                  <button onClick={() => sendEmail()} className="btn btn-primary mr-3">Send email</button>
+                  <button onClick={() => deleteBid()} className="btn btn-danger">Delete bid</button>
+                </div>
               </div>
             </div>
             <form onSubmit={(event) => onSubmit(event)}>
@@ -178,7 +207,7 @@ const Bid = (props) => {
               </div>
               <div className="form-group">
                 <label>Total for materials and labor</label>
-                <input required onChange={(event) => onChange('total_materials_and_labor', event.target.value)} type="text" className="form-control" value={bid.total_materials_and_labor} />
+                <input required onChange={(event) => onChange('total_materials_and_labor', event.target.value)} min="0" type="number" className="form-control" value={bid.total_materials_and_labor} />
               </div>
               <div className="form-group">
                 <label>Extras</label>
@@ -186,7 +215,7 @@ const Bid = (props) => {
               </div>
               <div className="form-group">
                 <label>Total for extras</label>
-                <input required onChange={(event) => onChange('total_for_extras', event.target.value)} type="text" className="form-control" value={bid.total_for_extras} />
+                <input required onChange={(event) => onChange('total_for_extras', event.target.value)} min="0" type="number" className="form-control" value={bid.total_for_extras} />
               </div>
               <div className="form-group">
                 <label>Grand total</label>

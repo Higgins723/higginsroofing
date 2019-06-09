@@ -151,7 +151,7 @@ const Create = (props) => {
               </div>
               <div className="form-group">
                 <label>Total for materials and labor</label>
-                <input required onChange={(event) => onChange('total_materials_and_labor', event.target.value)} type="text" className="form-control" value={bid.total_materials_and_labor} />
+                <input required onChange={(event) => onChange('total_materials_and_labor', event.target.value)} min="0" type="number" className="form-control" value={bid.total_materials_and_labor} />
               </div>
               <div className="form-group">
                 <label>Extras</label>
@@ -159,7 +159,7 @@ const Create = (props) => {
               </div>
               <div className="form-group">
                 <label>Total for extras</label>
-                <input required onChange={(event) => onChange('total_for_extras', event.target.value)} type="text" className="form-control" value={bid.total_for_extras} />
+                <input required onChange={(event) => onChange('total_for_extras', event.target.value)} min="0" type="number" className="form-control" value={bid.total_for_extras} />
               </div>
               <div className="form-group">
                 <label>Grand total</label>
