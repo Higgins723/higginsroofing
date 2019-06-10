@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
+import { invoice as emailInvoice, bid as emailBid } from '../utils';
 import axios from 'axios';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
@@ -70,11 +71,29 @@ const Bid = (props) => {
       });
   }
 
-  const sendEmail = () => {
+  const sendEmail = ({type}) => {
     const { match: { params } } = props;
+
+    let mail = {};
+    if (type === 'invoice') {
+      mail = {
+        subject: "Higgins Roofing Invoice",
+        text_content: emailInvoice.text(bid),
+        html_content: emailInvoice.html(bid),
+      }
+    }
+
+    if (type === 'bid') {
+      mail = {
+        subject: "Higgins Roofing Bid",
+        text_content: emailBid.text(bid),
+        html_content: emailBid.html(bid),
+      }
+    }
+
     setIsLoaded(false);
 
-    axios.post(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, bid, {
+    axios.post(`https://higginsroofingapi.herokuapp.com/api/bidsheet/${params.id}/`, mail, {
       headers: {"Authorization" : `JWT ${props.userData.token}`},
     })
       .then(response => {
@@ -142,7 +161,8 @@ const Bid = (props) => {
               <div className="row">
                 <div className="mb-2 col">
                   <div className="float-right">
-                    <button onClick={() => sendEmail()} className="btn btn-primary mr-3">Send email</button>
+                    <button onClick={() => sendEmail({type: 'invoice'})} className="btn btn-warning mr-3">Send invoice</button>
+                    <button onClick={() => sendEmail({type: 'bid'})} className="btn btn-primary mr-3">Send bid</button>
                     <button onClick={() => deleteBid()} className="btn btn-danger">Delete bid</button>
                   </div>
                 </div>
