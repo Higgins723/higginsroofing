@@ -161,9 +161,9 @@ const Bid = (props) => {
               <div className="row">
                 <div className="mb-2 col">
                   <div className="float-right">
-                    <button onClick={() => sendEmail({type: 'invoice'})} className="btn btn-warning mr-3">Send invoice</button>
-                    <button onClick={() => sendEmail({type: 'bid'})} className="btn btn-primary mr-3">Send bid</button>
-                    <button onClick={() => deleteBid()} className="btn btn-danger">Delete bid</button>
+                    <button onClick={() => sendEmail({type: 'invoice'})} className="btn btn-warning mr-1">Send invoice</button>
+                    <button onClick={() => sendEmail({type: 'bid'})} className="btn btn-primary mr-1">Send bid</button>
+                    <button onClick={() => deleteBid()} className="btn btn-danger">Delete</button>
                   </div>
                 </div>
               </div>
