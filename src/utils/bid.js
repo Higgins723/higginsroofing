@@ -1,5 +1,11 @@
+import moment from 'moment';
+
 const numberFormat = (number) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(number));
+}
+
+const dateFormat = (date) => {
+  return moment(Date.parse(date)).format('ddd MMM DD YYYY')
 }
 
 const html = (bid) => {
@@ -7,8 +13,8 @@ const html = (bid) => {
     <div>
       <h1>Please review your bid</h1>
       <div><b>Bill to:</b> ${bid.bill_to}</div>
-      <div><b>Date ordered:</b> ${bid.date_ordered}</div>
-      <div><b>Date promised:</b> ${bid.date_promised}</div>
+      <div><b>Date ordered:</b> ${dateFormat(bid.date_ordered)}</div>
+      <div><b>Date promised:</b> ${dateFormat(bid.date_promised)}</div>
       <div><b>Description:</b> ${bid.description}</div>
       <h3>Bid good for 30 days</h3>
       <div><b>Description:</b> ${bid.description}</div>
@@ -24,8 +30,8 @@ const text = (bid) => {
   return `
     Please review your bid\n
     Bill to: ${bid.bill_to}\n
-    Date ordered: ${bid.date_ordered}\n
-    Date promised: ${bid.date_promised}\n
+    Date ordered: ${dateFormat(bid.date_ordered)}\n
+    Date promised: ${dateFormat(bid.date_promised)}\n
     Description: ${bid.description}\n
     Total materials and labor: ${numberFormat(bid.total_materials_and_labor)}\n
     Extras: ${bid.extras}\n
