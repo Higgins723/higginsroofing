@@ -17,7 +17,6 @@ const html = (bid) => {
       <div><b>Date promised:</b> ${dateFormat(bid.date_promised)}</div>
       <div><b>Description:</b> ${bid.description}</div>
       <h3>Bid good for 30 days</h3>
-      <div><b>Description:</b> ${bid.description}</div>
       <div><b>Total materials and labor:</b> ${numberFormat(bid.total_materials_and_labor)}</div>
       <div><b>Extras:</b> ${bid.extras}</div>
       <div><b>Total for extras:</b> ${numberFormat(bid.total_for_extras)}</div>
@@ -33,6 +32,7 @@ const text = (bid) => {
     Date ordered: ${dateFormat(bid.date_ordered)}\n
     Date promised: ${dateFormat(bid.date_promised)}\n
     Description: ${bid.description}\n
+    Bid good for 30 days\n
     Total materials and labor: ${numberFormat(bid.total_materials_and_labor)}\n
     Extras: ${bid.extras}\n
     Total for extras: ${numberFormat(bid.total_for_extras)}\n
