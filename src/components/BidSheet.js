@@ -13,8 +13,8 @@ const BidSheet = (props) => {
   }
 
   const trunc = (s) => {
-    if (s.length > 20) {
-      return s.substr(0, 20) + '...';
+    if (s.length > 40) {
+      return s.substr(0, 40) + '...';
     } else {
       return s;
     }
