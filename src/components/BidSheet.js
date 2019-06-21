@@ -8,6 +8,10 @@ const BidSheet = (props) => {
   const [bids, setBids] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const numberFormat = (number) => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(number));
+  }
+
   const getBids = () => {
     axios.get('https://higginsroofingapi.herokuapp.com/api/bidsheet/', {
       headers: {"Authorization" : `JWT ${props.userData.token}`}
@@ -45,9 +49,10 @@ const BidSheet = (props) => {
               <div className="card bw mt-3 mb-3">
                 <div className="card-body">
                   <h5 className="card-title border-bottom">{i.job_name}</h5>
-                  <p className="card-text">{i.description}</p>
+                  <p className="card-text">{i.description.truncate(20) + '...'}</p>
                   <p className="card-text"><b>Bill to:</b> {i.bill_to}</p>
                   <p className="card-text"><b>Phone:</b> {i.phone}</p>
+                  <p className="card-text"><b>Total:</b> {numberFormat(i.grand_total)}</p>
                   <Link to={`/bid/${i.id}/`} className="btn btn-primary">See More</Link>
                 </div>
               </div>
