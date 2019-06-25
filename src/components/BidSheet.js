@@ -54,7 +54,7 @@ const BidSheet = (props) => {
         ) : (
           bids.map(i => (
             <div key={i.id} className="col-lg-4 col-md-6 col-xs-12">
-              <div className="card bw mt-3 mb-3">
+              <div className="shadow card bw mt-3 mb-3">
                 <div className="card-body">
                   <h5 className="card-title border-bottom">{i.job_name}</h5>
                   <p className="card-text">{trunc(i.description)}</p>
